@@ -1,39 +1,759 @@
 <!DOCTYPE html>
-<html>
-  <head>
-      <meta charset="utf-8">
-      <meta name="viewport" content="width=device-width">
-      <title>Portfolio Site</title>
-      <link href="/style.css" rel="stylesheet" type="text/css" />
-      <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.13.0/css/all.css">
-      <link rel="icon" href="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b2/Repl.it_logo.svg/220px-Repl.it_logo.png">
-      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-      <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
-      <script src="/script.js"></script>
-  </head>
-    <body>
-	  
-        <div class="container">
-	  
-		<!--────────────────Header───────────────-->
-	<header>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Shruti Rajpurohit — Technical Writer</title>
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.13.0/css/all.css">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0e0e0e;
+      --surface: #161616;
+      --border: #2a2a2a;
+      --text: #f0ece4;
+      --muted: #888;
+      --accent: #c8a97e;
+      --accent-dim: rgba(200, 169, 126, 0.12);
+    }
 
-		</a>
-		<nav>	
-		 <ul class="nav-bar"><div class="bg"></div>
-			<li><a class="nav-link active" href="#home">Home</a></li>
-			<li><a class="nav-link" href="#projects">Projects</a></li>
-			<li><a class="nav-link" href="#contact">Contact</a></li>
-		 </ul>
-			
-			<div class="hamburger">
-				<div class="line1"></div>
-            <div class="line2"></div>
-				<div class="line3"></div>
-			</div>
-		</nav>
-	</header>
-	<main>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 300;
+      overflow-x: hidden;
+    }
+
+    /* ── Scrollbar ── */
+    ::-webkit-scrollbar { width: 4px; background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 4px; }
+
+    /* ── Nav ── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 48px;
+      height: 64px;
+      background: rgba(14,14,14,0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid transparent;
+      transition: border-color 0.3s;
+    }
+
+    nav.scrolled { border-color: var(--border); }
+
+    .nav-logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.1rem;
+      color: var(--text);
+      text-decoration: none;
+      letter-spacing: 0.02em;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 36px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: var(--muted);
+      font-size: 0.82rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover { color: var(--accent); }
+
+    /* ── Hamburger ── */
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+      z-index: 200;
+    }
+
+    .hamburger span {
+      width: 24px;
+      height: 2px;
+      background: var(--text);
+      transition: all 0.3s;
+      display: block;
+    }
+
+    .hamburger.open span:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
+    .hamburger.open span:nth-child(2) { opacity: 0; }
+    .hamburger.open span:nth-child(3) { transform: rotate(-45deg) translate(5px, -5px); }
+
+    .mobile-menu {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: var(--bg);
+      z-index: 150;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 40px;
+    }
+
+    .mobile-menu.open { display: flex; }
+
+    .mobile-menu a {
+      text-decoration: none;
+      color: var(--text);
+      font-family: 'Playfair Display', serif;
+      font-size: 2.5rem;
+      transition: color 0.2s;
+    }
+
+    .mobile-menu a:hover { color: var(--accent); }
+
+    /* ── Hero ── */
+    #home {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 100px 48px 80px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-grain {
+      position: absolute;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+      opacity: 0.4;
+      pointer-events: none;
+    }
+
+    .hero-glow {
+      position: absolute;
+      width: 600px;
+      height: 600px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(200,169,126,0.07) 0%, transparent 70%);
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+    }
+
+    .hero-inner {
+      max-width: 720px;
+      text-align: center;
+      position: relative;
+      z-index: 1;
+      animation: fadeUp 0.9s ease both;
+    }
+
+    .hero-avatar {
+      width: 96px;
+      height: 96px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid var(--border);
+      margin-bottom: 32px;
+      filter: grayscale(20%);
+    }
+
+    .hero-label {
+      font-size: 0.75rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 16px;
+      display: block;
+    }
+
+    .hero-name {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2.8rem, 6vw, 4.5rem);
+      line-height: 1.1;
+      font-weight: 400;
+      margin-bottom: 24px;
+      color: var(--text);
+    }
+
+    .hero-name em {
+      font-style: italic;
+      color: var(--accent);
+    }
+
+    .hero-bio {
+      font-size: 1rem;
+      line-height: 1.8;
+      color: #aaa;
+      max-width: 560px;
+      margin: 0 auto 40px;
+    }
+
+    .hero-socials {
+      display: flex;
+      gap: 20px;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .hero-socials a {
+      width: 42px;
+      height: 42px;
+      border: 1px solid var(--border);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--muted);
+      font-size: 1rem;
+      text-decoration: none;
+      transition: all 0.2s;
+    }
+
+    .hero-socials a:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+      background: var(--accent-dim);
+    }
+
+    .hero-socials .upwork-icon img {
+      width: 18px;
+      height: 18px;
+      filter: grayscale(1) brightness(0.6);
+      transition: filter 0.2s;
+    }
+
+    .hero-socials .upwork-icon:hover img {
+      filter: grayscale(0) brightness(1);
+    }
+
+    .scroll-hint {
+      position: absolute;
+      bottom: 32px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      color: var(--muted);
+      font-size: 0.7rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      animation: bounce 2s infinite;
+    }
+
+    .scroll-hint i { font-size: 0.9rem; }
+
+    /* ── Section base ── */
+    section {
+      padding: 120px 48px;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .section-label {
+      font-size: 0.72rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 12px;
+      display: block;
+    }
+
+    .section-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 400;
+      margin-bottom: 16px;
+      line-height: 1.2;
+    }
+
+    .section-divider {
+      width: 48px;
+      height: 2px;
+      background: var(--accent);
+      margin-bottom: 60px;
+      border-radius: 2px;
+    }
+
+    /* ── Projects ── */
+    #projects { border-top: 1px solid var(--border); }
+
+    .projects-intro {
+      font-size: 1rem;
+      color: var(--muted);
+      max-width: 480px;
+      line-height: 1.7;
+      margin-bottom: 0;
+    }
+
+    .projects-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      margin-bottom: 60px;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 24px;
+    }
+
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+      text-decoration: none;
+      display: block;
+      transition: all 0.3s;
+      position: relative;
+    }
+
+    .card:hover {
+      border-color: var(--accent);
+      transform: translateY(-4px);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+    }
+
+    .card-img-wrap {
+      height: 190px;
+      overflow: hidden;
+      background: #1a1a1a;
+    }
+
+    .card-img-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.5s ease;
+      filter: brightness(0.85);
+    }
+
+    .card:hover .card-img-wrap img {
+      transform: scale(1.04);
+      filter: brightness(1);
+    }
+
+    .card-body {
+      padding: 20px 22px 22px;
+    }
+
+    .card-tag {
+      font-size: 0.68rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 8px;
+      display: block;
+    }
+
+    .card-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.05rem;
+      color: var(--text);
+      line-height: 1.5;
+      margin-bottom: 10px;
+    }
+
+    .card-desc {
+      font-size: 0.85rem;
+      color: var(--muted);
+      line-height: 1.65;
+    }
+
+    .card-arrow {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      width: 32px;
+      height: 32px;
+      border: 1px solid var(--border);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--muted);
+      font-size: 0.7rem;
+      opacity: 0;
+      transition: all 0.2s;
+    }
+
+    .card:hover .card-arrow {
+      opacity: 1;
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    /* Featured card */
+    .card.featured {
+      grid-column: span 2;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+    }
+
+    .card.featured .card-img-wrap {
+      height: 100%;
+      min-height: 220px;
+    }
+
+    /* ── Contact ── */
+    #contact {
+      border-top: 1px solid var(--border);
+      text-align: center;
+    }
+
+    .contact-inner {
+      max-width: 480px;
+      margin: 0 auto;
+    }
+
+    .contact-email {
+      display: inline-block;
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.4rem, 3vw, 2rem);
+      color: var(--text);
+      text-decoration: none;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 4px;
+      margin-bottom: 48px;
+      transition: border-color 0.2s, color 0.2s;
+    }
+
+    .contact-email:hover {
+      color: var(--accent);
+      border-color: var(--accent);
+    }
+
+    .contact-socials {
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .contact-socials a {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 20px;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 0.82rem;
+      letter-spacing: 0.05em;
+      transition: all 0.2s;
+    }
+
+    .contact-socials a:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+      background: var(--accent-dim);
+    }
+
+    .contact-socials .upwork-pill img {
+      width: 16px;
+      height: 16px;
+      filter: grayscale(1) brightness(0.6);
+      transition: filter 0.2s;
+    }
+
+    .contact-socials .upwork-pill:hover img {
+      filter: none;
+    }
+
+    /* ── Footer ── */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 28px 48px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    footer p {
+      font-size: 0.8rem;
+      color: var(--muted);
+    }
+
+    footer a {
+      color: var(--muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    footer a:hover { color: var(--accent); }
+
+    /* ── Animations ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes bounce {
+      0%, 100% { transform: translateX(-50%) translateY(0); }
+      50%       { transform: translateX(-50%) translateY(6px); }
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ── Responsive ── */
+    @media (max-width: 768px) {
+      nav { padding: 0 24px; }
+      .nav-links { display: none; }
+      .hamburger { display: flex; }
+
+      #home { padding: 100px 24px 80px; }
+      section { padding: 80px 24px; }
+
+      .card.featured {
+        grid-column: span 1;
+        grid-template-columns: 1fr;
+      }
+
+      .card.featured .card-img-wrap {
+        height: 190px;
+      }
+
+      footer { padding: 24px; flex-direction: column; text-align: center; }
+    }
+
+    @media (max-width: 500px) {
+      .cards-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Nav -->
+  <nav id="navbar">
+    <a href="#home" class="nav-logo">Shruti Rajpurohit</a>
+    <ul class="nav-links">
+      <li><a href="#home">Home</a></li>
+      <li><a href="#projects">Work</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+    <div class="hamburger" id="hamburger">
+      <span></span><span></span><span></span>
+    </div>
+  </nav>
+
+  <!-- Mobile menu -->
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="#home" onclick="closeMobile()">Home</a>
+    <a href="#projects" onclick="closeMobile()">Work</a>
+    <a href="#contact" onclick="closeMobile()">Contact</a>
+  </div>
+
+  <!-- Hero -->
+  <div id="home">
+    <div class="hero-grain"></div>
+    <div class="hero-glow"></div>
+    <div class="hero-inner">
+      <img class="hero-avatar" src="myimage.jpeg" alt="Shruti Rajpurohit">
+      <span class="hero-label">Technical Writer</span>
+      <h1 class="hero-name">Hello, I'm <em>Shruti.</em></h1>
+      <p class="hero-bio">
+        Technical writer with a background in chemistry and software development.
+        I turn complex APIs, developer tools, and AI workflows into documentation
+        that people actually want to read.
+      </p>
+      <div class="hero-socials">
+        <a href="https://github.com/Shruti-Rajpurohit" title="GitHub"><i class="fab fa-github"></i></a>
+        <a href="https://www.linkedin.com/in/shruti-rajpurohit-976b44226" title="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+        <a href="mailto:rajpurohitshruti20@gmail.com" title="Email"><i class="fa fa-envelope"></i></a>
+        <a href="https://www.upwork.com/freelancers/~01014f2c0e157f96f3" class="upwork-icon" title="Upwork"><img src="/Upwork.png" alt="Upwork"></a>
+      </div>
+    </div>
+    <div class="scroll-hint">
+      <span>Scroll</span>
+      <i class="fa fa-chevron-down"></i>
+    </div>
+  </div>
+
+  <!-- Projects -->
+  <section id="projects">
+    <div class="reveal">
+      <span class="section-label">Selected Work</span>
+      <div class="projects-header">
+        <div>
+          <h2 class="section-title">What I've built<br>and documented.</h2>
+          <div class="section-divider"></div>
+        </div>
+        <p class="projects-intro">
+          A mix of technical documentation, API references, developer guides,
+          and a live AI app I built from scratch.
+        </p>
+      </div>
+    </div>
+
+    <div class="cards-grid">
+
+      <!-- Featured: Aria -->
+      <a href="https://aria-fashion-stylist-production.up.railway.app/" class="card featured reveal" target="_blank">
+        <div class="card-img-wrap">
+          <img src="aria-landing-page.jpg" alt="Aria Fashion Stylist">
+        </div>
+        <div class="card-body">
+          <span class="card-tag">Full-Stack App · AI · Live</span>
+          <div class="card-title">Aria — AI Fashion Stylist</div>
+          <p class="card-desc">
+            A full-stack AI fashion stylist I built and deployed from scratch.
+            Powered by Mistral AI and Meta LLaMA 4 Vision. Includes a complete
+            documentation suite — API reference, developer setup guide, and user guide.
+          </p>
+        </div>
+        <div class="card-arrow"><i class="fa fa-arrow-right"></i></div>
+      </a>
+
+      <!-- Technical Writing Portfolio -->
+      <a href="https://github.com/Shruti-Rajpurohit/technical-writing-portfolio" class="card reveal" target="_blank">
+        <div class="card-img-wrap">
+          <img src="images (3).jpeg" alt="Technical Writing Portfolio">
+        </div>
+        <div class="card-body">
+          <span class="card-tag">API Reference · Developer Guide · Tutorial</span>
+          <div class="card-title">Technical Writing Portfolio</div>
+          <p class="card-desc">API references, developer guides, and tutorials covering RAG pipelines, REST APIs, and AI/ML workflows.</p>
+        </div>
+        <div class="card-arrow"><i class="fa fa-arrow-right"></i></div>
+      </a>
+
+      <!-- Blogs & Guides -->
+      <a href="https://drive.google.com/drive/folders/1tp_30X1LJLSVgdjWqKuNdu96-5IEiD5G" class="card reveal" target="_blank">
+        <div class="card-img-wrap">
+          <img src="images.png" alt="Technical Blogs">
+        </div>
+        <div class="card-body">
+          <span class="card-tag">Blog · User Guide</span>
+          <div class="card-title">Technical Blogs & Guides</div>
+          <p class="card-desc">Technical blogs, user guides, and productivity tool documentation written for general audiences.</p>
+        </div>
+        <div class="card-arrow"><i class="fa fa-arrow-right"></i></div>
+      </a>
+
+      <!-- Strategy Market -->
+      <a href="https://www.strategy.market/founders/" class="card reveal" target="_blank">
+        <div class="card-img-wrap">
+          <img src="Screenshot_20260216_200515_WhatsApp.jpg" alt="Strategy Market">
+        </div>
+        <div class="card-body">
+          <span class="card-tag">Frontend Development</span>
+          <div class="card-title">Strategy Market</div>
+          <p class="card-desc">Designed and developed the front-end for Strategy Market, a platform connecting strategists with business teams.</p>
+        </div>
+        <div class="card-arrow"><i class="fa fa-arrow-right"></i></div>
+      </a>
+
+      <!-- PEN America -->
+      <a href="https://docs.google.com/document/d/1NjRCAxfKO4tbfd149S3qbzpxXqwDWPuu/edit?usp=drivesdk&ouid=112724962727695840866&rtpof=true&sd=true/" class="card reveal" target="_blank">
+        <div class="card-img-wrap">
+          <img src="images.jpeg" alt="PEN America Essay">
+        </div>
+        <div class="card-body">
+          <span class="card-tag">Essay · PEN America 2022</span>
+          <div class="card-title">Free Expression Essay</div>
+          <p class="card-desc">Featured submission in the PEN America 2022 Free Expression Essay Competition.</p>
+        </div>
+        <div class="card-arrow"><i class="fa fa-arrow-right"></i></div>
+      </a>
+
+    </div>
+  </section>
+
+  <!-- Contact -->
+  <section id="contact">
+    <div class="contact-inner reveal">
+      <span class="section-label">Get in Touch</span>
+      <h2 class="section-title">Let's work<br>together.</h2>
+      <div class="section-divider" style="margin: 0 auto 40px;"></div>
+      <a href="mailto:rajpurohitshruti20@gmail.com" class="contact-email">
+        rajpurohitshruti20@gmail.com
+      </a>
+      <div class="contact-socials">
+        <a href="https://github.com/Shruti-Rajpurohit">
+          <i class="fab fa-github"></i> GitHub
+        </a>
+        <a href="https://www.linkedin.com/in/shruti-rajpurohit-976b44226">
+          <i class="fab fa-linkedin-in"></i> LinkedIn
+        </a>
+        <a href="https://www.upwork.com/freelancers/~01014f2c0e157f96f3" class="upwork-pill">
+          <img src="/Upwork.png" alt="Upwork"> Upwork
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <p>© 2025 Shruti Rajpurohit</p>
+    <p>Technical Writer · <a href="https://github.com/Shruti-Rajpurohit">GitHub</a></p>
+  </footer>
+
+  <script>
+    // Nav scroll
+    window.addEventListener('scroll', () => {
+      document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 10);
+    });
+
+    // Hamburger
+    const hamburger = document.getElementById('hamburger');
+    const mobileMenu = document.getElementById('mobileMenu');
+
+    hamburger.addEventListener('click', () => {
+      hamburger.classList.toggle('open');
+      mobileMenu.classList.toggle('open');
+    });
+
+    function closeMobile() {
+      hamburger.classList.remove('open');
+      mobileMenu.classList.remove('open');
+    }
+
+    // Scroll reveal
+    const reveals = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry, i) => {
+        if (entry.isIntersecting) {
+          setTimeout(() => entry.target.classList.add('visible'), i * 80);
+        }
+      });
+    }, { threshold: 0.1 });
+
+    reveals.forEach(el => observer.observe(el));
+  </script>
+
+</body>
+</html>
 		<!--─────────────────Home────────────────-->
 
     
@@ -123,11 +843,6 @@
      </footer>
 	  
   </div>
-  <!--
-  This script places a badge on your repl's full-browser view back to your repl's cover
-  page. Try various colors for the theme: dark, light, red, orange, yellow, lime, green,
-  teal, blue, blurple, magenta, pink!
-  -->
   
   </body>
 </html>
